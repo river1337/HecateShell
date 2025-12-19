@@ -1,0 +1,33 @@
+import Quickshell
+import QtQuick
+import "." as Shell
+import Niri 0.1
+
+ShellRoot {
+    id: shell
+
+    // Niri
+    Niri {
+        id: niri
+        Component.onCompleted: connect()
+
+        onConnected: console.info("Connected to niri")
+        onErrorOccurred: function(error) {
+            console.error("Niri error:", error)
+        }
+    }
+
+    // Load the bar
+    Shell.Bar {}
+
+    // Future modules can be added here:
+    // Wallpaper {}
+    // Notifications {}
+    // AppFinder {}
+    // Settings {}
+
+    Component.onCompleted: {
+        console.log("Shell initialized!")
+        console.log("Hot-reloading enabled - edit config/theme.conf to update theme")
+    }
+}

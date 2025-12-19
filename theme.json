@@ -1,0 +1,23 @@
+{
+    "name": "Hyprmini-Matugen",
+    "primary": "#D5C4AA",
+    "primaryText": "#392F1D",
+    "primaryContainer": "#B39F86",
+    "secondary": "#CFC5B8",
+    "secondaryText": "#2C1F1A",
+    "surface": "#141311",
+    "surfaceText": "#E7E1DE",
+    "surfaceVariant": "#211F1D",
+    "surfaceVariantText": "#CEC5BA",
+    "surfaceTint": "#D5C4AA",
+    "background": "#141311",
+    "backgroundText": "#E7E1DE",
+    "outline": "#6D6258",
+    "surfaceContainer": "#1A1816",
+    "surfaceContainerHigh": "#1E1C1A",
+    "surfaceContainerHighest": "#242220",
+    "error": "#FFB4AB",
+    "warning": "#CFC5B8",
+    "info": "#D5C4AA",
+    "matugen_type": "scheme-fidelity"
+}

@@ -1,0 +1,16 @@
+module Shell
+
+# Config
+singleton Config 1.0 config/Config.qml
+
+# Bar
+Bar 1.0 bar/Bar.qml
+
+# Components
+Workspaces 1.0 components/Workspaces.qml
+MusicVisualizer 1.0 components/MusicVisualizer.qml
+DateWidget 1.0 components/DateWidget.qml
+TimeWidget 1.0 components/TimeWidget.qml
+AudioWidget 1.0 components/AudioWidget.qml
+WifiWidget 1.0 components/WifiWidget.qml
+SystemWidgets 1.0 components/SystemWidgets.qml
