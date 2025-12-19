@@ -6,7 +6,7 @@ import Quickshell.Io
 Item {
     id: visualizer
     width: Shell.Config.visualizerWidth
-    height: 18
+    height: 19
 
     property var levels: []
 
