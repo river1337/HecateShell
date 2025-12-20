@@ -6,6 +6,10 @@ import Quickshell.Io
 QtObject {
     id: config
 
+    // Get user's home directory from environment
+    property string homeDir: Quickshell.env("HOME")
+    property string configPath: homeDir + "/.config/HecateShell/config"
+
     // Bar Configuration
     property int barHeight: 35
     property color barBackground: "#1e1e2e"
@@ -55,10 +59,12 @@ QtObject {
 
     function loadColors() {
         if (!colorLoaderProcess) {
+            var colorsPath = configPath + "/colors.conf"
             colorLoaderProcess = Qt.createQmlObject('
                 import Quickshell.Io
                 Process {
-                    command: ["cat", "/home/river/.config/quickshell/config/colors.conf"]
+                    property string colorsFile: "' + colorsPath + '"
+                    command: ["cat", colorsFile]
                     stdout: SplitParser {
                         onRead: function(data) {
                             checkAndParseColors(data)

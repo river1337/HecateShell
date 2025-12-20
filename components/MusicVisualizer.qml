@@ -1,5 +1,6 @@
 import QtQuick
 import ".." as Shell
+import Quickshell
 import Quickshell.Io
 
 // Music visualizer component with cava integration
@@ -14,7 +15,7 @@ Item {
     Process {
         id: cavaProcess
         running: true
-        command: ["cava", "-p", "/home/river/.config/quickshell/config/cava.conf"]
+        command: ["cava", "-p", Shell.Config.configPath + "/cava.conf"]
 
         stdout: SplitParser {
             onRead: function(data) {

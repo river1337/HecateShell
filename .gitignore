@@ -1,3 +1,5 @@
+# this gitignore was taken from the DankMaterialShell git repository
+
 # C++ objects and libs
 *.slo
 *.lo
