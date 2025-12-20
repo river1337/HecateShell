@@ -6,6 +6,8 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"hecate-shell/internal/matugen"
+
 	"github.com/spf13/cobra"
 )
 
@@ -67,11 +69,8 @@ func runWallpaper(cmd *cobra.Command, args []string) error {
 	if generateTheme {
 		fmt.Println("\nGenerating theme from wallpaper colors...")
 
-		matugenCmd := exec.Command("matugen", "image", wallpaperPath, "-m", "dark", "--continue-on-error")
-		matugenCmd.Stdout = os.Stdout
-		matugenCmd.Stderr = os.Stderr
-
-		if err := matugenCmd.Run(); err != nil {
+		// Run matugen with merged config (user's config + HecateShell template)
+		if err := matugen.RunMatugen("image", wallpaperPath); err != nil {
 			return fmt.Errorf("failed to generate theme with matugen: %w", err)
 		}
 

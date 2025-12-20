@@ -2,10 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 
 	"hecate-shell/internal/config"
+	"hecate-shell/internal/matugen"
 
 	"github.com/spf13/cobra"
 )
@@ -43,12 +42,8 @@ func runThemeReload(cmd *cobra.Command, args []string) error {
 
 	fmt.Println("Reloading theme from theme.json...")
 
-	// Run matugen
-	matugenCmd := exec.Command("matugen", "json", themeFile, "-m", "dark", "--continue-on-error")
-	matugenCmd.Stdout = os.Stdout
-	matugenCmd.Stderr = os.Stderr
-
-	if err := matugenCmd.Run(); err != nil {
+	// Run matugen with merged config (user's config + HecateShell template)
+	if err := matugen.RunMatugen("json", themeFile); err != nil {
 		return fmt.Errorf("failed to run matugen: %w", err)
 	}
 

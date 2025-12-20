@@ -25,10 +25,12 @@ This will launch QuickShell with the HecateShell configuration.`,
 func init() {
 	rootCmd.AddCommand(runCmd)
 	runCmd.Flags().BoolP("reload", "r", false, "Kill existing instance before starting")
+	runCmd.Flags().BoolP("debug", "d", false, "Run in foreground (without --daemonize)")
 }
 
 func runShell(cmd *cobra.Command, args []string) error {
 	reload, _ := cmd.Flags().GetBool("reload")
+	debug, _ := cmd.Flags().GetBool("debug")
 
 	// Check if installed
 	if !config.IsInstalled() {
@@ -50,8 +52,14 @@ func runShell(cmd *cobra.Command, args []string) error {
 	}
 
 	// Start QuickShell
-	fmt.Println("Starting HecateShell...")
-	quickshellCmd := exec.Command("quickshell", "--no-duplicate", "--daemonize", "-c", shellPath)
+	var quickshellCmd *exec.Cmd
+	if debug {
+		fmt.Println("Starting HecateShell in debug mode (foreground)...")
+		quickshellCmd = exec.Command("quickshell", "--no-duplicate", "-c", shellPath)
+	} else {
+		fmt.Println("Starting HecateShell...")
+		quickshellCmd = exec.Command("quickshell", "--no-duplicate", "--daemonize", "-c", shellPath)
+	}
 	quickshellCmd.Stdout = os.Stdout
 	quickshellCmd.Stderr = os.Stderr
 

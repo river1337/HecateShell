@@ -28,6 +28,10 @@ ShellRoot {
 
     Component.onCompleted: {
         console.log("Shell initialized!")
-        console.log("Hot-reloading enabled - edit config/theme.conf to update theme")
+        console.log("Hot-reloading enabled - edit theme.json to update theme")
+
+        // Force Config singleton to initialize
+        var _ = Shell.Config.barHeight
+        console.log("Config initialized")
     }
 }
