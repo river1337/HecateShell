@@ -63,15 +63,36 @@ func createMergedConfig() (string, func(), error) {
 		return "", nil, err
 	}
 
-	// HecateShell template config
-	hecateTemplate := fmt.Sprintf(`
+	// HecateShell template configs
+	homeDir := os.Getenv("HOME")
+	hecateTemplates := fmt.Sprintf(`
 [templates.hecate]
 input_path = "%s/config/templates/hecate.json"
 output_path = "%s/theme.json"
-`, shellDir, shellDir)
 
-	// Merge configs: user config + HecateShell template
-	mergedConfig := userConfig + "\n" + hecateTemplate
+[templates.hecate_cava]
+input_path = "%s/config/templates/cava.ini"
+output_path = "%s/.config/cava/config"
+
+[templates.hecate_spicetify]
+input_path = "%s/config/templates/spicetify.ini"
+output_path = "%s/.config/spicetify/Themes/text/color.ini"
+
+[templates.hecate_discord]
+input_path = "%s/config/templates/discord.css"
+output_path = "%s/.config/Vencord/themes/sys24.css"
+
+[templates.hecate_micro]
+input_path = "%s/config/templates/micro.micro"
+output_path = "%s/.config/micro/colorschemes/matugen.micro"
+`, shellDir, shellDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
+		shellDir, homeDir)
+
+	// Merge configs: user config + HecateShell templates
+	mergedConfig := userConfig + "\n" + hecateTemplates
 
 	// Write to temp file
 	if _, err := tmpFile.WriteString(mergedConfig); err != nil {
