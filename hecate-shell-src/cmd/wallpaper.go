@@ -33,8 +33,13 @@ func init() {
 func runWallpaper(cmd *cobra.Command, args []string) error {
 	wallpaperPath := args[0]
 	generateTheme, _ := cmd.Flags().GetBool("generate-theme")
+
+	// Get transition settings from flags or use defaults from config
 	transition, _ := cmd.Flags().GetString("transition")
 	duration, _ := cmd.Flags().GetInt("duration")
+
+	// If not specified via flags, could read from config in the future
+	// For now just use the flag defaults
 
 	// Expand path
 	if wallpaperPath[0] == '~' {

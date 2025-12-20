@@ -110,3 +110,7 @@ bin/
 # direnv
 .envrc
 .direnv/
+
+# Built binary
+hecate-shell-src/hecate
+hecate

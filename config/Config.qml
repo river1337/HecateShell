@@ -60,6 +60,10 @@ QtObject {
     property int visualizerBarCount: 20
     property int visualizerBarSpacing: 2
 
+    // Wallpaper (swww)
+    property string swwwTransition: "fade"
+    property int swwwDuration: 1
+
     // Icons (using Unicode for now, can switch to icon fonts later)
     property string iconVolume: "󰕾"
     property string iconVolumeMuted: "󰖁"
