@@ -1,0 +1,28 @@
+{
+    "colorscheme": "matugen",
+    "colorcolumn": 0,
+    "syntax": true,
+    "termcolors": 256,
+    "tabsize": 4,
+    "softwrap": true,
+    "autoclose": true,
+    "autoindent": true,
+    "detectindent": true,
+    "savecursor": true,
+    "ruler": true,
+    "hlsearch": true,
+    "ignorecase": true,
+    "mouse": true,
+    "scrollbar": true,
+    "diffgutter": true,
+    "statusline": true,
+    "autosave": 0,
+    "mkparents": true,
+
+    "autoinsert": true,
+    "rmtrailingws": true,
+    "wordwrap": true,
+    "tabstospaces": true,
+    "clipboard": "external",
+    "colorschemebg": "default"
+}
