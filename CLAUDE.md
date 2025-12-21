@@ -146,16 +146,12 @@ Color transitions are animated (300ms) across all widgets.
 7. All widgets update via property bindings
 
 Color mappings (defined in Config.qml):
-- `barBackground` → `theme.surface`
-- `backgroundColor` → `theme.background`
+- `backgroundColor` → `theme.surface`
 - `backgroundColorAlt` → `theme.surfaceContainer`
 - `borderColor` → `theme.outline`
 - `textColor` → `theme.surfaceText`
 - `textColorDim` → `theme.surfaceVariantText`
-- `accentColor` → `theme.primary`
-- `workspaceActive` → `theme.primary`
-- `workspaceInactive` → `theme.surfaceContainerHigh`
-- `visualizerColor` → `theme.primary`
+- `accentColor` → `theme.primary` (workspace indicator, visualizer, active icons)
 
 ### Matugen Integration
 

@@ -23,7 +23,7 @@ Item {
             width: 20
             height: 20
             radius: 10
-            color: Shell.Config.workspaceActive
+            color: Shell.Config.accentColor
             y: (background.height - height) / 2
 
             property int activeIndex: 0

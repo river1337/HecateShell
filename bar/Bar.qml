@@ -14,7 +14,7 @@ PanelWindow {
 
     // Bar styling
     implicitHeight: Shell.Config.barHeight
-    color: Shell.Config.barBackground
+    color: Shell.Config.backgroundColor
 
     // LEFT SECTION: Workspaces
     Shell.Workspaces {

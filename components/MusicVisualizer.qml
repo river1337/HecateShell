@@ -66,7 +66,7 @@ Item {
                     width: parent.width
                     height: Math.max(Shell.Config.visualizerHeight,
                                    visualizer.levels[index] !== undefined ? visualizer.levels[index] : 0)
-                    color: Shell.Config.visualizerColor
+                    color: Shell.Config.accentColor
                     radius: 1
 
                     Behavior on height {

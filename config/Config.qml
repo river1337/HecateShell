@@ -25,7 +25,6 @@ QtObject {
 
     // Bar Configuration
     property int barHeight: 35
-    property color barBackground: "#1e1e2e"
     property int barBorderRadius: 0
 
     // Typography
@@ -38,15 +37,9 @@ QtObject {
     property color textColor: "#cdd6f4"
     property color textColorDim: "#a6adc8"
     property color accentColor: "#89b4fa"
-    property color accentColorAlt: "#f5c2e7"
     property color backgroundColor: "#1e1e2e"
     property color backgroundColorAlt: "#313244"
     property color borderColor: "#45475a"
-
-    // Widget specific colors
-    property color workspaceActive: "#89b4fa"
-    property color workspaceInactive: "#45475a"
-    property color visualizerColor: "#89b4fa"
 
     // Spacing & Padding
     property int paddingSmall: 4
@@ -83,34 +76,24 @@ QtObject {
             var theme = JSON.parse(data)
 
             // Map Material Design 3 colors to our theme
-            config.barBackground = theme.surface
-            config.backgroundColor = theme.background
+            config.backgroundColor = theme.surface
             config.backgroundColorAlt = theme.surfaceContainer
             config.borderColor = theme.outline
             config.textColor = theme.surfaceText
             config.textColorDim = theme.surfaceVariantText
             config.accentColor = theme.primary
-            config.accentColorAlt = theme.secondary
-            config.workspaceActive = theme.primary
-            config.workspaceInactive = theme.surfaceContainerHigh
-            config.visualizerColor = theme.primary
         } catch (e) {
             console.error("Failed to parse theme.json:", e)
         }
     }
 
     // Smooth color transitions
-    Behavior on barBackground { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
     Behavior on backgroundColor { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
     Behavior on backgroundColorAlt { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
     Behavior on borderColor { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
     Behavior on textColor { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
     Behavior on textColorDim { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
     Behavior on accentColor { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
-    Behavior on accentColorAlt { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
-    Behavior on workspaceActive { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
-    Behavior on workspaceInactive { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
-    Behavior on visualizerColor { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
 
     Component.onCompleted: {
         loadColors() // Load colors on startup
