@@ -9,16 +9,28 @@ QtObject {
 
     // Get user's home directory from environment
     property string homeDir: Quickshell.env("HOME")
-    property string configPath: homeDir + "/.config/HecateShell/config"
+    property string shellDir: homeDir + "/.config/HecateShell"
+    property string configPath: shellDir + "/config"
 
-    // Color loader component
-    property var loader: ConfigModule.ColorLoader {
+    // Loaders
+    property var colorLoader: ConfigModule.ColorLoader {
         onColorsLoaded: function(data) {
             var fullData = data.trim()
-            if (fullData && fullData !== config.lastFileContent) {
+            if (fullData && fullData !== config.lastThemeContent) {
                 console.log("Theme updated")
-                config.lastFileContent = fullData
+                config.lastThemeContent = fullData
                 config.parseColors(fullData)
+            }
+        }
+    }
+
+    property var configLoader: ConfigModule.ColorLoader {
+        onColorsLoaded: function(data) {
+            var fullData = data.trim()
+            if (fullData && fullData !== config.lastConfigContent) {
+                console.log("Config updated")
+                config.lastConfigContent = fullData
+                config.parseConfig(fullData)
             }
         }
     }
@@ -47,12 +59,12 @@ QtObject {
     property int paddingLarge: 12
     property int spacing: 8
 
-    // Workspace indicator
+    // Workspace indicator (derived)
     property int workspaceItemSize: barHeight - paddingSmall * 4
 
     // Music Visualizer
     property int visualizerWidth: 200
-    property int visualizerHeight: 3
+    property int visualizerMinHeight: 3
     property int visualizerBarCount: 20
     property int visualizerBarSpacing: 2
 
@@ -60,25 +72,29 @@ QtObject {
     property string swwwTransition: "fade"
     property int swwwDuration: 1
 
-    // Icons (using Unicode for now, can switch to icon fonts later)
+    // Icons
     property string iconVolume: "󰕾"
     property string iconVolumeMuted: "󰖁"
     property string iconWifiOn: "󰖩"
     property string iconWifiOff: "󰖪"
 
-    property string lastFileContent: ""
-    property var colorReloadTimer: null
+    // Internal state
+    property string lastThemeContent: ""
+    property string lastConfigContent: ""
+    property var reloadTimer: null
 
-    function loadColors() {
-        var themePath = homeDir + "/.config/HecateShell/theme.json"
-        loader.load(themePath)
+    function loadTheme() {
+        colorLoader.load(shellDir + "/theme.json")
+    }
+
+    function loadConfig() {
+        configLoader.load(shellDir + "/config.json")
     }
 
     function parseColors(data) {
         try {
             var theme = JSON.parse(data)
 
-            // Map Material Design 3 colors to our theme
             config.backgroundColor = theme.surface
             config.backgroundColorAlt = theme.surfaceContainer
             config.borderColor = theme.outline
@@ -90,6 +106,58 @@ QtObject {
         }
     }
 
+    function parseConfig(data) {
+        try {
+            var cfg = JSON.parse(data)
+
+            // Bar
+            if (cfg.bar) {
+                if (cfg.bar.height !== undefined) config.barHeight = cfg.bar.height
+                if (cfg.bar.borderRadius !== undefined) config.barBorderRadius = cfg.bar.borderRadius
+            }
+
+            // Typography
+            if (cfg.typography) {
+                if (cfg.typography.fontFamily !== undefined) config.fontFamily = cfg.typography.fontFamily
+                if (cfg.typography.fontSize !== undefined) config.fontSize = cfg.typography.fontSize
+                if (cfg.typography.fontSizeLarge !== undefined) config.fontSizeLarge = cfg.typography.fontSizeLarge
+                if (cfg.typography.fontSizeSmall !== undefined) config.fontSizeSmall = cfg.typography.fontSizeSmall
+            }
+
+            // Spacing
+            if (cfg.spacing) {
+                if (cfg.spacing.paddingSmall !== undefined) config.paddingSmall = cfg.spacing.paddingSmall
+                if (cfg.spacing.paddingMedium !== undefined) config.paddingMedium = cfg.spacing.paddingMedium
+                if (cfg.spacing.paddingLarge !== undefined) config.paddingLarge = cfg.spacing.paddingLarge
+                if (cfg.spacing.spacing !== undefined) config.spacing = cfg.spacing.spacing
+            }
+
+            // Visualizer
+            if (cfg.visualizer) {
+                if (cfg.visualizer.width !== undefined) config.visualizerWidth = cfg.visualizer.width
+                if (cfg.visualizer.minHeight !== undefined) config.visualizerMinHeight = cfg.visualizer.minHeight
+                if (cfg.visualizer.barCount !== undefined) config.visualizerBarCount = cfg.visualizer.barCount
+                if (cfg.visualizer.barSpacing !== undefined) config.visualizerBarSpacing = cfg.visualizer.barSpacing
+            }
+
+            // Wallpaper
+            if (cfg.wallpaper) {
+                if (cfg.wallpaper.transition !== undefined) config.swwwTransition = cfg.wallpaper.transition
+                if (cfg.wallpaper.duration !== undefined) config.swwwDuration = cfg.wallpaper.duration
+            }
+
+            // Icons
+            if (cfg.icons) {
+                if (cfg.icons.volume !== undefined) config.iconVolume = cfg.icons.volume
+                if (cfg.icons.volumeMuted !== undefined) config.iconVolumeMuted = cfg.icons.volumeMuted
+                if (cfg.icons.wifiOn !== undefined) config.iconWifiOn = cfg.icons.wifiOn
+                if (cfg.icons.wifiOff !== undefined) config.iconWifiOff = cfg.icons.wifiOff
+            }
+        } catch (e) {
+            console.error("Failed to parse config.json:", e)
+        }
+    }
+
     // Smooth color transitions
     Behavior on backgroundColor { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
     Behavior on backgroundColorAlt { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
@@ -98,11 +166,19 @@ QtObject {
     Behavior on textColorDim { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
     Behavior on accentColor { ColorAnimation { duration: 300; easing.type: Easing.InOutQuad } }
 
-    Component.onCompleted: {
-        loadColors() // Load colors on startup
+    // Smooth size/spacing transitions
+    Behavior on barHeight { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
+    Behavior on paddingSmall { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
+    Behavior on paddingMedium { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
+    Behavior on paddingLarge { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
+    Behavior on visualizerWidth { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
 
-        // Create timer for hot-reloading colors
-        colorReloadTimer = Qt.createQmlObject('
+    Component.onCompleted: {
+        loadTheme()
+        loadConfig()
+
+        // Create timer for hot-reloading
+        reloadTimer = Qt.createQmlObject('
             import QtQuick
             Timer {
                 interval: 1000
@@ -110,6 +186,9 @@ QtObject {
                 repeat: true
             }
         ', config)
-        colorReloadTimer.triggered.connect(loadColors)
+        reloadTimer.triggered.connect(function() {
+            loadTheme()
+            loadConfig()
+        })
     }
 }

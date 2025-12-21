@@ -71,7 +71,7 @@ Item {
     Rectangle {
         id: background
         width: content.width + Shell.Config.paddingLarge * 2
-        height: content.height + Shell.Config.paddingSmall * 2
+        height: Shell.Config.workspaceItemSize + Shell.Config.paddingSmall * 2
         radius: height / 2
         color: Shell.Config.backgroundColorAlt
 

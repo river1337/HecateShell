@@ -1,0 +1,34 @@
+{
+    "bar": {
+        "height": 35,
+        "borderRadius": 0
+    },
+    "typography": {
+        "fontFamily": "JetBrains Mono",
+        "fontSize": 12,
+        "fontSizeLarge": 14,
+        "fontSizeSmall": 10
+    },
+    "spacing": {
+        "paddingSmall": 4,
+        "paddingMedium": 8,
+        "paddingLarge": 12,
+        "spacing": 8
+    },
+    "visualizer": {
+        "width": 200,
+        "minHeight": 3,
+        "barCount": 20,
+        "barSpacing": 2
+    },
+    "wallpaper": {
+        "transition": "fade",
+        "duration": 1
+    },
+    "icons": {
+        "volume": "󰕾",
+        "volumeMuted": "󰖁",
+        "wifiOn": "󰖩",
+        "wifiOff": "󰖪"
+    }
+}

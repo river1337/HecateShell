@@ -7,7 +7,7 @@ import Quickshell.Io
 Item {
     id: visualizer
     width: Shell.Config.visualizerWidth
-    height: Shell.Config.barHeight - Shell.Config.paddingSmall * 4
+    height: Shell.Config.workspaceItemSize
 
     property var levels: []
 
@@ -58,14 +58,16 @@ Item {
 
             Item {
                 width: (Shell.Config.visualizerWidth - (Shell.Config.visualizerBarCount - 1) * Shell.Config.visualizerBarSpacing) / Shell.Config.visualizerBarCount
-                height: Shell.Config.barHeight
+                height: Shell.Config.workspaceItemSize
 
                 Rectangle {
                     anchors.bottom: parent.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: parent.width
-                    height: Math.max(Shell.Config.visualizerHeight,
-                                   visualizer.levels[index] !== undefined ? visualizer.levels[index] : 0)
+                    // Scale cava output (0-15) to workspaceItemSize, with minimum height
+                    property real rawLevel: visualizer.levels[index] !== undefined ? visualizer.levels[index] : 0
+                    property real scaledLevel: (rawLevel / 15.0) * Shell.Config.workspaceItemSize
+                    height: Math.max(Shell.Config.visualizerMinHeight, scaledLevel)
                     color: Shell.Config.accentColor
                     radius: 1
 
