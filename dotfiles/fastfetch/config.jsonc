@@ -4,40 +4,35 @@
     "source": "$HOME/.config/fastfetch/ascii.txt",
     "padding": {
       "top": 1,
-      "right": 2
+      "right": 3
     }
   },
   "display": {
-    "separator": "  "
+    "separator": "  ",
+    "color": {
+      "keys": "magenta",
+      "title": "magenta"
+    }
   },
   "modules": [
-    {
-      "type": "title",
-      "format": "{#1}╭── {#}User: {user-name-colored}@{host-name-colored}"
-    },
-
-    // System
-    { "type": "os",      "key": "{#separator}│ {#keys}󰍹  OS         " },
-    { "type": "kernel",  "key": "{#separator}│ {#keys}󰒋  Kernel     " },
-    { "type": "packages","key": "{#separator}│ {#keys}󰏖  Packages   " },
-    { "type": "uptime",  "key": "{#separator}│ {#keys}󰅐  Uptime     " },
-
-    // Desktop / Shell
-    { "type": "de",      "key": "{#separator}│ {#keys}󰧨  DE         " },
-    { "type": "wm",      "key": "{#separator}│ {#keys}󱂬  WM         " },
-    { "type": "shell",   "key": "{#separator}│ {#keys}󰞷  Shell      " },
-
-    // Hardware
-    { "type": "cpu",     "key": "{#separator}│ {#keys}󰻠  CPU        " },
-    { "type": "gpu",     "key": "{#separator}│ {#keys}󰢮  GPU        " },
-    { "type": "gpu",     "key": "{#separator}│ {#keys}󰍹  GPU Driver ", "format": "{driver}" },
-    { "type": "memory",  "key": "{#separator}│ {#keys}󰍛  RAM        " },
-    { "type": "disk",    "key": "{#separator}│ {#keys}󰋊  Disk (/)   ", "folders": "/" },
-
-    // Colors
-    { "type": "colors",  "key": "{#separator}│      ", "symbol": "circle" },
-
-    // Footer
-    { "type": "custom",  "format": "{#1}╰───────────────────────────────╯" }
+    { "type": "title", "format": "{#magenta}╭─── {#cyan}⟨{#} {user-name-colored}@{host-name-colored} {#cyan}⟩{#magenta} ───" },
+    { "type": "custom", "format": "{#magenta}│" },
+    { "type": "os", "key": "{#magenta}│ {#cyan}  OS       {#white}→ " },
+    { "type": "kernel", "key": "{#magenta}│ {#cyan}  Kernel   {#white}→ " },
+    { "type": "packages", "key": "{#magenta}│ {#cyan}  Packages {#white}→ " },
+    { "type": "uptime", "key": "{#magenta}│ {#cyan}  Uptime   {#white}→ " },
+    { "type": "custom", "format": "{#magenta}│" },
+    { "type": "de", "key": "{#magenta}│ {#cyan}  DE       {#white}→ " },
+    { "type": "wm", "key": "{#magenta}│ {#cyan}  WM       {#white}→ " },
+    { "type": "shell", "key": "{#magenta}│ {#cyan}  Shell    {#white}→ " },
+    { "type": "terminal", "key": "{#magenta}│ {#cyan}  Terminal {#white}→ " },
+    { "type": "custom", "format": "{#magenta}│" },
+    { "type": "cpu", "key": "{#magenta}│ {#cyan}  CPU      {#white}→ " },
+    { "type": "gpu", "key": "{#magenta}│ {#cyan}  GPU      {#white}→ " },
+    { "type": "memory", "key": "{#magenta}│ {#cyan}  RAM      {#white}→ " },
+    { "type": "disk", "key": "{#magenta}│ {#cyan}  Disk     {#white}→ ", "folders": "/" },
+    { "type": "custom", "format": "{#magenta}│" },
+    { "type": "colors", "key": "{#magenta}│ ", "symbol": "circle" },
+    { "type": "custom", "format": "{#magenta}╰──────────────────────────────" }
   ]
 }
