@@ -131,7 +131,18 @@ output_path = "%s/.local/share/color-schemes/HecateShell.colors"
 [templates.hecate_qt]
 input_path = "%s/config/templates/qt5ct-colors.conf"
 output_path = "%s/.config/qt5ct/colors/HecateShell.conf"
+
+# GTK colors
+[templates.hecate_gtk]
+input_path = "%s/config/templates/gtk-colors.css"
+output_path = "%s/.config/gtk-4.0/gtk-colors.css"
+
+[templates.hecate_gtk3]
+input_path = "%s/config/templates/gtk-colors.css"
+output_path = "%s/.config/gtk-3.0/gtk.css"
 `, shellDir, shellDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
 		shellDir, homeDir,
 		shellDir, homeDir,
 		shellDir, homeDir,
