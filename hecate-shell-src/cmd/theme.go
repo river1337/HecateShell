@@ -5,6 +5,7 @@ import (
 
 	"hecate-shell/internal/config"
 	"hecate-shell/internal/matugen"
+	"hecate-shell/internal/niri"
 
 	"github.com/spf13/cobra"
 )
@@ -45,6 +46,13 @@ func runThemeReload(cmd *cobra.Command, args []string) error {
 	// Run matugen with merged config (user's config + HecateShell template)
 	if err := matugen.RunMatugen("json", themeFile); err != nil {
 		return fmt.Errorf("failed to run matugen: %w", err)
+	}
+
+	// Update niri config colors
+	if err := niri.UpdateNiriColors(); err != nil {
+		fmt.Printf("Warning: failed to update niri colors: %v\n", err)
+	} else {
+		fmt.Println("Niri colors updated!")
 	}
 
 	fmt.Println("Theme reloaded! Shell will auto-update within 1 second.")

@@ -64,28 +64,82 @@ func createMergedConfig() (string, func(), error) {
 	}
 
 	// HecateShell template configs
+	// Some templates adapted from DankMaterialShell (https://github.com/AvengeMedia/DankMaterialShell)
 	homeDir := os.Getenv("HOME")
 	hecateTemplates := fmt.Sprintf(`
+# HecateShell core theme
 [templates.hecate]
 input_path = "%s/config/templates/hecate.json"
 output_path = "%s/theme.json"
 
+# Audio visualizer
 [templates.hecate_cava]
 input_path = "%s/config/templates/cava.ini"
 output_path = "%s/.config/cava/config"
 
+# Spotify
 [templates.hecate_spicetify]
 input_path = "%s/config/templates/spicetify.ini"
 output_path = "%s/.config/spicetify/Themes/text/color.ini"
 
+# Discord (Vencord)
 [templates.hecate_discord]
 input_path = "%s/config/templates/discord.css"
 output_path = "%s/.config/Vencord/themes/sys24.css"
 
+# Micro editor
 [templates.hecate_micro]
 input_path = "%s/config/templates/micro.micro"
 output_path = "%s/.config/micro/colorschemes/matugen.micro"
+
+# VSCode theme
+[templates.hecate_vscode]
+input_path = "%s/config/templates/vscode.json"
+output_path = "%s/.vscode/extensions/hecate-theme/themes/hecate-dark.json"
+
+# Niri compositor colors
+[templates.hecate_niri]
+input_path = "%s/config/templates/niri-colors.kdl"
+output_path = "%s/.config/niri/hecate-colors.generated.kdl"
+
+# Firefox (pywalfox)
+[templates.hecate_pywalfox]
+input_path = "%s/config/templates/pywalfox.json"
+output_path = "%s/.cache/wal/colors.json"
+
+# Kitty terminal
+[templates.hecate_kitty]
+input_path = "%s/config/templates/kitty.conf"
+output_path = "%s/.config/kitty/hecate-colors.conf"
+
+# Kitty tabs
+[templates.hecate_kitty_tabs]
+input_path = "%s/config/templates/kitty-tabs.conf"
+output_path = "%s/.config/kitty/hecate-tabs.conf"
+
+# Alacritty terminal
+[templates.hecate_alacritty]
+input_path = "%s/config/templates/alacritty.toml"
+output_path = "%s/.config/alacritty/hecate-colors.toml"
+
+# KDE color scheme
+[templates.hecate_kde]
+input_path = "%s/config/templates/kcolorscheme.colors"
+output_path = "%s/.local/share/color-schemes/HecateShell.colors"
+
+# Qt5ct/Qt6ct colors
+[templates.hecate_qt]
+input_path = "%s/config/templates/qt5ct-colors.conf"
+output_path = "%s/.config/qt5ct/colors/HecateShell.conf"
 `, shellDir, shellDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
+		shellDir, homeDir,
 		shellDir, homeDir,
 		shellDir, homeDir,
 		shellDir, homeDir,
