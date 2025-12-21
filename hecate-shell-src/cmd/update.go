@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"hecate-shell/internal/config"
+	"hecate-shell/internal/vscode"
 
 	"github.com/spf13/cobra"
 )
@@ -83,6 +84,11 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 	newVersion, err := getCurrentVersion()
 	if err != nil {
 		newVersion = "unknown"
+	}
+
+	// Ensure VSCode theme extension is installed
+	if err := vscode.InstallThemeExtension(); err != nil {
+		fmt.Printf("Warning: failed to install VSCode theme: %v\n", err)
 	}
 
 	fmt.Printf("\nUpdated successfully to version %s!\n", newVersion)

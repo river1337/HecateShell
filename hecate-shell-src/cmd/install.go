@@ -6,6 +6,7 @@ import (
 	"os/exec"
 
 	"hecate-shell/internal/config"
+	"hecate-shell/internal/vscode"
 
 	"github.com/spf13/cobra"
 )
@@ -59,6 +60,13 @@ func runInstall(cmd *cobra.Command, args []string) error {
 
 	if err := gitCmd.Run(); err != nil {
 		return fmt.Errorf("failed to clone repository: %w", err)
+	}
+
+	// Install VSCode theme extension if VSCode is present
+	if err := vscode.InstallThemeExtension(); err != nil {
+		fmt.Printf("Warning: failed to install VSCode theme: %v\n", err)
+	} else {
+		fmt.Println("VSCode theme extension installed!")
 	}
 
 	fmt.Println("\nHecateShell installed successfully!")

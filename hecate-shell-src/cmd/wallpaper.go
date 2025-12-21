@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"hecate-shell/internal/hooks"
 	"hecate-shell/internal/matugen"
 	"hecate-shell/internal/niri"
 
@@ -86,6 +87,9 @@ func runWallpaper(cmd *cobra.Command, args []string) error {
 		} else {
 			fmt.Println("Niri colors updated!")
 		}
+
+		// Run post-theme hooks (pywalfox, etc.)
+		hooks.RunPostThemeHooks()
 
 		fmt.Println("Theme generated! Shell will auto-update within 1 second.")
 	}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"hecate-shell/internal/config"
+	"hecate-shell/internal/hooks"
 	"hecate-shell/internal/matugen"
 	"hecate-shell/internal/niri"
 
@@ -54,6 +55,9 @@ func runThemeReload(cmd *cobra.Command, args []string) error {
 	} else {
 		fmt.Println("Niri colors updated!")
 	}
+
+	// Run post-theme hooks (pywalfox, etc.)
+	hooks.RunPostThemeHooks()
 
 	fmt.Println("Theme reloaded! Shell will auto-update within 1 second.")
 	return nil
