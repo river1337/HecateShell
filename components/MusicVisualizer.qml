@@ -7,7 +7,7 @@ import Quickshell.Io
 Item {
     id: visualizer
     width: Shell.Config.visualizerWidth
-    height: 19
+    height: Shell.Config.barHeight - Shell.Config.paddingSmall * 4
 
     property var levels: []
 
@@ -30,7 +30,7 @@ Item {
                         newLevels.push(0)
                     }
                 }
-                // Ensure we have exactly 20 bars
+                // Ensure we have exactly visualizerBarCount bars
                 while (newLevels.length < Shell.Config.visualizerBarCount) {
                     newLevels.push(0)
                 }

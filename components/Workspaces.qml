@@ -20,16 +20,16 @@ Item {
         // Sliding active indicator
         Rectangle {
             id: activeIndicator
-            width: 20
-            height: 20
-            radius: 10
+            width: Shell.Config.workspaceItemSize
+            height: Shell.Config.workspaceItemSize
+            radius: width / 2
             color: Shell.Config.accentColor
             y: (background.height - height) / 2
 
             property int activeIndex: 0
             property int activeWorkspaceId: 1
 
-            x: Shell.Config.paddingSmall + ((activeIndex - 1) * (20 + Shell.Config.paddingMedium))
+            x: Shell.Config.paddingSmall + ((activeIndex - 1) * (Shell.Config.workspaceItemSize + Shell.Config.paddingMedium))
 
             Behavior on x {
                 NumberAnimation { duration: 200; easing.type: Easing.OutQuad }
@@ -48,8 +48,8 @@ Item {
 
                 Item {
                     visible: index < 11
-                    width: 20
-                    height: 19
+                    width: Shell.Config.workspaceItemSize
+                    height: Shell.Config.workspaceItemSize
 
                     property bool isActive: model.isActive
                     property int workspaceId: model.id

@@ -47,6 +47,9 @@ QtObject {
     property int paddingLarge: 12
     property int spacing: 8
 
+    // Workspace indicator
+    property int workspaceItemSize: barHeight - paddingSmall * 4
+
     // Music Visualizer
     property int visualizerWidth: 200
     property int visualizerHeight: 3
