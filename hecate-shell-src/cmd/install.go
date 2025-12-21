@@ -16,7 +16,7 @@ import (
 
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "Install or Update HecateShell configuration",
+	Short: "Install or Update HecateShell",
 	Long: `Install or Update HecateShell with an interactive installer.
 
 This will guide you through:
