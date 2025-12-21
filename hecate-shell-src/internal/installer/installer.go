@@ -65,6 +65,9 @@ type Model struct {
 	// Update mode (true if HecateShell is already installed)
 	isUpdate bool
 
+	// Dev mode (clone full repo instead of release archive)
+	devMode bool
+
 	// Animation state
 	logoAnim   *anim.LogoAssembler
 	typewriter *anim.Typewriter
@@ -95,11 +98,12 @@ type Model struct {
 }
 
 // New creates a new installer model
-func New() Model {
+func New(devMode bool) Model {
 	isUpdate := config.IsInstalled()
 	return Model{
 		screen:         ScreenWelcome,
 		isUpdate:       isUpdate,
+		devMode:        devMode,
 		dotfileChoices: make(map[string]bool),
 		installDeps:    true,
 		installShell:   true,
@@ -468,7 +472,12 @@ func (m *Model) startInstallation() tea.Cmd {
 	}
 
 	if m.installShell {
-		tasks = append(tasks, shellAction+" HecateShell...")
+		shellMsg := shellAction + " HecateShell..."
+		if m.devMode && !isUpdate {
+			shellMsg = "Cloning HecateShell (dev mode)..."
+		}
+		tasks = append(tasks, shellMsg)
+		devMode := m.devMode // capture for closure
 		installTasks = append(installTasks, installTask{
 			name: "shell",
 			run: func() error {
@@ -478,8 +487,14 @@ func (m *Model) startInstallation() tea.Cmd {
 					if !result.Success {
 						return result.Error
 					}
+				} else if devMode {
+					// Dev mode: clone full repository
+					result := actions.InstallShellDev(true, nil)
+					if !result.Success {
+						return result.Error
+					}
 				} else {
-					// Fresh install via git clone
+					// Normal install: download release archive
 					result := actions.InstallShell(true, nil)
 					if !result.Success {
 						return result.Error
@@ -700,9 +715,12 @@ func (m Model) viewDotfiles() string {
 func (m Model) viewShell() string {
 	title := styles.Title.Render("Install HecateShell?")
 	desc := "Download and install the QuickShell configuration."
+	note := ""
 	if m.isUpdate {
 		title = styles.Title.Render("Update HecateShell?")
 		desc = "Pull the latest changes from the repository."
+	} else if m.devMode {
+		note = styles.DimText.Render("(Dev mode: cloning full repository)")
 	}
 	descStyled := styles.Subtitle.Render(desc)
 
@@ -713,16 +731,13 @@ func (m Model) viewShell() string {
 
 	help := styles.Help.Render("← → to select • Enter to confirm • q to quit")
 
-	return lipgloss.JoinVertical(lipgloss.Center,
-		title,
-		"",
-		descStyled,
-		"",
-		"",
-		selector,
-		"",
-		help,
-	)
+	parts := []string{title, "", descStyled}
+	if note != "" {
+		parts = append(parts, note)
+	}
+	parts = append(parts, "", "", selector, "", help)
+
+	return lipgloss.JoinVertical(lipgloss.Center, parts...)
 }
 
 func (m Model) viewInstalling() string {
@@ -869,13 +884,13 @@ func keepSudoAlive() {
 }
 
 // Run starts the installer TUI
-func Run() error {
+func Run(devMode bool) error {
 	// Acquire sudo privileges before starting TUI
 	if err := acquireSudo(); err != nil {
 		return err
 	}
 
-	p := tea.NewProgram(New(), tea.WithAltScreen())
+	p := tea.NewProgram(New(devMode), tea.WithAltScreen())
 	_, err := p.Run()
 	return err
 }

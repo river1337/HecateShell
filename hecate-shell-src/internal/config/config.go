@@ -7,8 +7,9 @@ import (
 
 const (
 	ConfigDirName = "HecateShell"
-	RepoURL      = "https://github.com/river1337/HecateShell.git"
-	VersionURL   = "https://raw.githubusercontent.com/river1337/HecateShell/refs/heads/main/version"
+	RepoURL       = "https://github.com/river1337/HecateShell.git"
+	ReleaseURL    = "https://github.com/river1337/HecateShell/releases/latest/download/HecateShell.tar.gz"
+	VersionURL    = "https://raw.githubusercontent.com/river1337/HecateShell/refs/heads/main/version"
 )
 
 // GetConfigDir returns the path to the HecateShell config directory

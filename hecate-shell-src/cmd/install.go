@@ -32,17 +32,19 @@ func init() {
 	rootCmd.AddCommand(installCmd)
 	installCmd.Flags().BoolP("force", "f", false, "Force reinstall (removes existing installation)")
 	installCmd.Flags().Bool("legacy", false, "Use legacy (non-interactive) installer")
+	installCmd.Flags().Bool("dev", false, "Clone full git repository (for development)")
 }
 
 func runInstall(cmd *cobra.Command, args []string) error {
 	legacy, _ := cmd.Flags().GetBool("legacy")
+	dev, _ := cmd.Flags().GetBool("dev")
 
 	if legacy {
 		return runLegacyInstall(cmd, args)
 	}
 
 	// Run the interactive TUI installer
-	return installer.Run()
+	return installer.Run(dev)
 }
 
 // runLegacyInstall is the old simple installer (kept for scripting/automation)

@@ -1,8 +1,11 @@
 package actions
 
 import (
+	"archive/tar"
+	"compress/gzip"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -139,7 +142,7 @@ func InstallDotfile(name string, progress ProgressCallback) TaskResult {
 	return TaskResult{Success: true, Message: fmt.Sprintf("%s configuration installed", name)}
 }
 
-// InstallShell clones the HecateShell repository
+// InstallShell downloads and extracts HecateShell from the latest release
 func InstallShell(force bool, progress ProgressCallback) TaskResult {
 	configDir, err := config.GetConfigDir()
 	if err != nil {
@@ -147,7 +150,93 @@ func InstallShell(force bool, progress ProgressCallback) TaskResult {
 	}
 
 	if progress != nil {
-		progress(0, 2, "Downloading HecateShell...")
+		progress(0, 3, "Downloading HecateShell...")
+	}
+
+	// Check if already installed
+	if config.IsInstalled() {
+		if !force {
+			return TaskResult{
+				Success: false,
+				Error:   fmt.Errorf("HecateShell is already installed"),
+			}
+		}
+		// Remove existing installation
+		if err := os.RemoveAll(configDir); err != nil {
+			return TaskResult{
+				Success: false,
+				Error:   fmt.Errorf("failed to remove existing installation: %w", err),
+			}
+		}
+	}
+
+	// Create config directory
+	if err := os.MkdirAll(configDir, 0755); err != nil {
+		return TaskResult{
+			Success: false,
+			Error:   fmt.Errorf("failed to create config directory: %w", err),
+		}
+	}
+
+	// Download the latest release archive
+	// GitHub redirects /releases/latest/download/ to the actual release
+	archiveURL := config.ReleaseURL
+	resp, err := http.Get(archiveURL)
+	if err != nil {
+		return TaskResult{
+			Success: false,
+			Error:   fmt.Errorf("failed to download release: %w", err),
+		}
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return TaskResult{
+			Success: false,
+			Error:   fmt.Errorf("failed to download release: HTTP %d", resp.StatusCode),
+		}
+	}
+
+	if progress != nil {
+		progress(1, 3, "Extracting files...")
+	}
+
+	// Extract the tar.gz archive
+	if err := extractTarGz(resp.Body, configDir); err != nil {
+		return TaskResult{
+			Success: false,
+			Error:   fmt.Errorf("failed to extract archive: %w", err),
+		}
+	}
+
+	if progress != nil {
+		progress(2, 3, "Verifying installation...")
+	}
+
+	// Verify installation
+	if !config.IsInstalled() {
+		return TaskResult{
+			Success: false,
+			Error:   fmt.Errorf("installation verification failed"),
+		}
+	}
+
+	if progress != nil {
+		progress(3, 3, "HecateShell installed!")
+	}
+
+	return TaskResult{Success: true, Message: "HecateShell installed successfully"}
+}
+
+// InstallShellDev clones the full HecateShell repository (for development)
+func InstallShellDev(force bool, progress ProgressCallback) TaskResult {
+	configDir, err := config.GetConfigDir()
+	if err != nil {
+		return TaskResult{Success: false, Error: err}
+	}
+
+	if progress != nil {
+		progress(0, 2, "Cloning HecateShell repository...")
 	}
 
 	// Check if already installed
@@ -179,7 +268,7 @@ func InstallShell(force bool, progress ProgressCallback) TaskResult {
 	}
 
 	if progress != nil {
-		progress(1, 2, "Extracting files...")
+		progress(1, 2, "Verifying installation...")
 	}
 
 	// Verify installation
@@ -191,10 +280,81 @@ func InstallShell(force bool, progress ProgressCallback) TaskResult {
 	}
 
 	if progress != nil {
-		progress(2, 2, "HecateShell installed!")
+		progress(2, 2, "HecateShell installed (dev mode)!")
 	}
 
-	return TaskResult{Success: true, Message: "HecateShell installed successfully"}
+	return TaskResult{Success: true, Message: "HecateShell installed successfully (dev mode)"}
+}
+
+// extractTarGz extracts a tar.gz archive to the destination directory
+func extractTarGz(r io.Reader, dest string) error {
+	gzr, err := gzip.NewReader(r)
+	if err != nil {
+		return fmt.Errorf("failed to create gzip reader: %w", err)
+	}
+	defer gzr.Close()
+
+	tr := tar.NewReader(gzr)
+
+	for {
+		header, err := tr.Next()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return fmt.Errorf("failed to read tar header: %w", err)
+		}
+
+		// Clean the path and make it relative to dest
+		name := filepath.Clean(header.Name)
+		// Remove leading ./ if present
+		name = strings.TrimPrefix(name, "./")
+		if name == "." || name == "" {
+			continue
+		}
+
+		target := filepath.Join(dest, name)
+
+		// Ensure the target is within the destination directory (security check)
+		if !strings.HasPrefix(filepath.Clean(target), filepath.Clean(dest)) {
+			return fmt.Errorf("invalid file path in archive: %s", name)
+		}
+
+		switch header.Typeflag {
+		case tar.TypeDir:
+			if err := os.MkdirAll(target, os.FileMode(header.Mode)); err != nil {
+				return fmt.Errorf("failed to create directory %s: %w", target, err)
+			}
+
+		case tar.TypeReg:
+			// Ensure parent directory exists
+			if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {
+				return fmt.Errorf("failed to create parent directory for %s: %w", target, err)
+			}
+
+			f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.FileMode(header.Mode))
+			if err != nil {
+				return fmt.Errorf("failed to create file %s: %w", target, err)
+			}
+
+			if _, err := io.Copy(f, tr); err != nil {
+				f.Close()
+				return fmt.Errorf("failed to write file %s: %w", target, err)
+			}
+			f.Close()
+
+		case tar.TypeSymlink:
+			// Ensure parent directory exists
+			if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {
+				return fmt.Errorf("failed to create parent directory for symlink %s: %w", target, err)
+			}
+			if err := os.Symlink(header.Linkname, target); err != nil {
+				return fmt.Errorf("failed to create symlink %s: %w", target, err)
+			}
+		}
+	}
+
+	return nil
 }
 
 // copyDir recursively copies a directory
