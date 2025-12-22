@@ -52,7 +52,7 @@ When you generate a theme, colors automatically sync to **15+ applications** inc
 Your existing `~/.config/matugen/config.toml` templates are also applied.
 
 <details>
-<summary><b>📋 Theme Commands</b></summary>
+<summary><b>Theme Commands</b></summary>
 
 ```bash
 # Generate theme from wallpaper
