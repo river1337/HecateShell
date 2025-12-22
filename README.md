@@ -85,7 +85,9 @@ HecateShell uses matugen to generate Material Design 3 color palettes. When you 
 - **Cava** (`~/.config/cava/config`) - Audio visualizer gradient
 - **Spicetify** (`~/.config/spicetify/Themes/text/color.ini`) - Spotify theme
 - **Discord** (`~/.config/Vencord/themes/sys24.css`) - Vencord system24 theme
-- **Micro** (`~/.config/micro/colorschemes/matugen.micro`) - Editor colorscheme
+- **Micro** (`~/.config/micro/colorschemes/matugen.micro`) - Micro editor colorscheme
+- **Neovim** (`~/.config/nvim/lua/plugins/hecate-colors.lua`) - Neovim colorscheme
+- And many more (VSCode, Niri, Firefox, Kitty, Alacritty, KDE, Qt, GTK)
 
 Your existing `~/.config/matugen/config.toml` templates are also applied, so any other apps you have configured will update too.
 

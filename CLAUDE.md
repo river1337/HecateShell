@@ -97,7 +97,15 @@ shell.qml                    # Entry point - imports Niri, loads Bar
 │       ├── cava.ini        # Cava audio visualizer
 │       ├── spicetify.ini   # Spotify theme
 │       ├── discord.css     # Vencord/system24 theme
-│       └── micro.micro     # Micro editor colorscheme
+│       ├── micro.micro     # Micro editor colorscheme
+│       └── nvim.lua        # Neovim colorscheme
+├── dotfiles/               # Bundled dotfile configurations
+│   ├── niri/              # Niri compositor config
+│   ├── fish/              # Fish shell config
+│   ├── kitty/             # Kitty terminal config
+│   ├── micro/             # Micro editor config
+│   ├── fastfetch/         # Fastfetch system info config
+│   └── nvim/              # Neovim editor config
 ├── config.json             # User config (bar, typography, spacing, etc.) - hot-reloaded
 └── theme.json              # Material Design 3 color palette - hot-reloaded
 ```
@@ -145,7 +153,9 @@ Color transitions are animated (300ms), size/spacing transitions are animated (2
    - `~/.config/cava/config` (visualizer)
    - `~/.config/spicetify/Themes/text/color.ini` (spotify)
    - `~/.config/Vencord/themes/sys24.css` (discord)
-   - `~/.config/micro/colorschemes/matugen.micro` (editor)
+   - `~/.config/micro/colorschemes/matugen.micro` (micro editor)
+   - `~/.config/nvim/lua/plugins/hecate-colors.lua` (neovim)
+   - And other configured apps (VSCode, Niri, Firefox, Kitty, Alacritty, KDE, Qt, GTK)
 5. Config.qml hot-reloads `theme.json` every 1 second
 6. JSON is parsed and Material Design 3 colors mapped to shell properties
 7. All widgets update via property bindings
@@ -207,10 +217,21 @@ Ping-based connectivity check:
 
 ### CLI Installation Flow
 
-1. `hecate install` clones repo from GitHub to `~/.config/HecateShell`
-2. Checks for `shell.qml` to verify installation
-3. `hecate run` launches QuickShell with config directory path
-4. QuickShell runs with `--no-duplicate --daemonize` flags
+1. `hecate install` runs an interactive TUI installer
+2. Installer offers to install dependencies (via paru/yay/pacman)
+3. Installer offers to install dotfile configurations:
+   - Niri (compositor config)
+   - Fish (shell)
+   - Kitty (terminal)
+   - Micro (editor)
+   - Fastfetch (system info)
+   - Neovim (editor)
+4. Installer downloads and extracts HecateShell from GitHub releases
+5. Existing dotfiles are automatically backed up before installation
+6. `hecate run` launches QuickShell with config directory path
+7. QuickShell runs with `--no-duplicate --daemonize` flags
+
+Dotfiles are defined in `internal/installer/actions/actions.go` in the `DotfileMapping` variable.
 
 ### Update/Version System
 

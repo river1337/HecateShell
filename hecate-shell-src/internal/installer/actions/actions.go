@@ -36,6 +36,7 @@ var DotfileMapping = map[string]struct {
 	"Kitty":     {Source: "dotfiles/kitty", Dest: "kitty"},
 	"Micro":     {Source: "dotfiles/micro", Dest: "micro"},
 	"Fastfetch": {Source: "dotfiles/fastfetch", Dest: "fastfetch"},
+	"Neovim":    {Source: "dotfiles/nvim", Dest: "nvim"},
 }
 
 // TaskResult holds the result of an installation task
