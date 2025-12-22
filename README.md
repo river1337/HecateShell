@@ -153,20 +153,14 @@ Example structure:
 To ensure full functionality of HecateShell when using Niri, add the following entries to your `config.kdl`:
 
 ```kdl
-// Start swww and HecateShell automatically on login
-spawn-at-startup "swww-daemon" // required for wallpaper support
+// Start HecateShell automatically on login
 spawn-at-startup "hecate" "run"
 
 // ─────────────────────────────────────────────
 // Optional: Wallpaper in the overview backdrop
 // ─────────────────────────────────────────────
-// Only include the rules below if you want the
+// Only include the rule below if you want the
 // wallpaper to be visible behind the overview.
-
-layer-rule {
-    match namespace="^swww-daemon$"
-    place-within-backdrop true
-}
 
 layer-rule {
     match namespace="^quickshell$"
@@ -186,7 +180,6 @@ layout {
 - [cava](https://archlinux.org/packages/extra/x86_64/cava/) - Audio visualizer
 - [pipewire](https://archlinux.org/packages/extra/x86_64/pipewire/) + [wireplumber](https://archlinux.org/packages/extra/x86_64/wireplumber/) - Audio control
 - [matugen](https://aur.archlinux.org/packages/matugen-bin/) - Theme generation
-- [swww](https://aur.archlinux.org/packages/swww/) - Wallpaper daemon
 - [niri](https://github.com/YaLTeR/niri) - Wayland compositor
 
 **Optional:**

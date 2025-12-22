@@ -292,12 +292,7 @@ window-rule {
 // LAYER RULES
 // ===================
 layer-rule {
-    match namespace="^quickshell$"
-    place-within-backdrop true
-}
-
-layer-rule {
-    match namespace="^swww-daemon$"
+    match namespace="^hecate-shell$"
     place-within-backdrop true
 }
 
@@ -306,7 +301,6 @@ layer-rule {
 // ===================
 spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store &"
 spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
-spawn-at-startup "swww-daemon"
 spawn-at-startup "hecate" "run"
 
 // ===================

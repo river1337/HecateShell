@@ -93,14 +93,18 @@ Note: `--continue-on-error` is required because matugen templates for other apps
 ### QML Shell Structure
 
 ```
-shell.qml                    # Entry point - imports Niri, loads Bar
-├── bar/Bar.qml             # Main bar container (left/center/right sections)
-├── components/
-│   ├── Workspaces.qml      # Workspace indicators with sliding animation
-│   ├── DateWidget.qml      # Live-updating date display
-│   ├── MusicVisualizer.qml # Real-time audio visualizer using cava
-│   ├── TimeWidget.qml      # Live-updating time display
-│   └── SystemWidgets.qml   # Audio (PipeWire) + WiFi (ping-based)
+shell.qml                    # Entry point - imports Niri, loads modules
+├── modules/
+│   ├── bar/
+│   │   ├── Bar.qml         # Main bar container (left/center/right sections)
+│   │   └── components/     # Bar components (Workspaces, Date, Time, etc.)
+│   │       ├── Workspaces.qml      # Workspace indicators with sliding animation
+│   │       ├── DateWidget.qml      # Live-updating date display
+│   │       ├── MusicVisualizer.qml # Real-time audio visualizer using cava
+│   │       ├── TimeWidget.qml      # Live-updating time display
+│   │       └── SystemWidgets.qml   # Audio (PipeWire) + WiFi (ping-based)
+│   └── wallpaper/
+│       └── Wallpaper.qml   # Native wallpaper rendering with transitions & blur
 ├── config/
 │   ├── Config.qml          # Singleton config with hot-reload (checks every 1s)
 │   ├── ColorLoader.qml     # Process-based JSON file reader
@@ -119,7 +123,7 @@ shell.qml                    # Entry point - imports Niri, loads Bar
 │   ├── micro/             # Micro editor config
 │   ├── fastfetch/         # Fastfetch system info config
 │   └── nvim/              # Neovim editor config
-├── config.json             # User config (bar, typography, spacing, etc.) - hot-reloaded
+├── config.json             # User config (bar, typography, spacing, wallpaper, etc.) - hot-reloaded
 └── theme.json              # Material Design 3 color palette - hot-reloaded
 ```
 
@@ -134,7 +138,7 @@ hecate-shell-src/
 │   ├── run.go             # Launch QuickShell with --daemonize
 │   ├── update.go          # Git pull + version checking
 │   ├── theme.go           # Theme reload via matugen
-│   └── wallpaper.go       # swww integration + theme generation
+│   └── wallpaper.go       # Wallpaper management + theme generation
 └── internal/
     ├── config/config.go   # Path helpers, version checking
     ├── matugen/matugen.go # Merged matugen config handling
@@ -220,6 +224,31 @@ Ping-based connectivity check:
 - Active workspace text fades to darker color
 - Niri IPC integration for workspace state
 
+### Wallpaper System (Wallpaper.qml)
+
+Native wallpaper rendering without external dependencies:
+- QML Image component for wallpaper display
+- Hot-reloadable via `config.json` → `wallpaper.path`
+- Fade transition animation (configurable duration)
+- Blur effect for Niri overview mode (using MultiEffect)
+- Wallpaper copied to `~/.config/HecateShell/wallpaper.*` for persistence
+- Positioned as background layer using PanelWindow.LayerBackground
+- Works across all screens via Quickshell.screens
+
+**Wallpaper Config Options:**
+- `path`: Absolute path to wallpaper image
+- `transition`: Transition type (currently only "fade")
+- `duration`: Transition duration in seconds
+- `blurOverview`: Enable blur effect during Niri overview
+- `blurAmount`: Blur intensity (0-255, default 64)
+
+**How it works:**
+1. CLI command updates `config.json` with new wallpaper path
+2. Config.qml hot-reloads within 1 second
+3. Wallpaper.qml watches `Shell.Config.wallpaperPath` for changes
+4. On change, triggers fade transition from old to new wallpaper
+5. MultiEffect applies blur when `niri.overviewActive` is true
+
 ## Key Technical Details
 
 ### QuickShell/Niri Integration
@@ -256,12 +285,11 @@ Dotfiles are defined in `internal/installer/actions/actions.go` in the `DotfileM
 ## Dependencies
 
 Runtime:
-- quickshell-git (Qt 6.10+, Niri support)
+- quickshell-git (Qt 6.10+, Niri support, MultiEffect for blur)
 - cava (audio visualizer)
 - pipewire + wireplumber (audio control)
 - matugen (color generation)
 - niri (Wayland compositor)
-- swww (wallpaper daemon)
 
 Build (Go CLI):
 - Go 1.21+

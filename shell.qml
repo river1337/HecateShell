@@ -17,11 +17,11 @@ ShellRoot {
         }
     }
 
-    // Load the bar
+    // Load modules
+    Wallpaper {}
     Bar {}
 
     // Future modules can be added here:
-    // Wallpaper {}
     // Notifications {}
     // AppFinder {}
     // Settings {}

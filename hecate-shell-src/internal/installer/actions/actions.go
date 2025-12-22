@@ -22,7 +22,6 @@ var Dependencies = []string{
 	"pipewire",
 	"wireplumber",
 	"matugen-bin",
-	"swww",
 	"ttf-jetbrains-mono-nerd",
 }
 
@@ -438,7 +437,6 @@ func GetMissingDependencies() []string {
 		"pipewire":                "pipewire",
 		"wireplumber":             "wpctl",
 		"matugen-bin":             "matugen",
-		"swww":                    "swww",
 		"ttf-jetbrains-mono-nerd": "", // Font, no binary to check
 	}
 

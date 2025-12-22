@@ -4,5 +4,9 @@ module Shell
 singleton Config 1.0 config/Config.qml
 ColorLoader 1.0 config/ColorLoader.qml
 
+# Services
+singleton NiriService 1.0 services/NiriService.qml
+
 # Modules
 Bar 1.0 modules/bar/Bar.qml
+Wallpaper 1.0 modules/wallpaper/Wallpaper.qml

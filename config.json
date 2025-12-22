@@ -1,7 +1,19 @@
 {
     "bar": {
-        "height": 35,
-        "borderRadius": 0
+        "borderRadius": 0,
+        "height": 35
+    },
+    "icons": {
+        "volume": "󰕾",
+        "volumeMuted": "󰖁",
+        "wifiOff": "󰖪",
+        "wifiOn": "󰖩"
+    },
+    "spacing": {
+        "paddingLarge": 12,
+        "paddingMedium": 8,
+        "paddingSmall": 4,
+        "spacing": 8
     },
     "typography": {
         "fontFamily": "JetBrains Mono",
@@ -9,26 +21,17 @@
         "fontSizeLarge": 14,
         "fontSizeSmall": 10
     },
-    "spacing": {
-        "paddingSmall": 4,
-        "paddingMedium": 8,
-        "paddingLarge": 12,
-        "spacing": 8
-    },
     "visualizer": {
-        "width": 200,
-        "minHeight": 3,
         "barCount": 20,
-        "barSpacing": 2
+        "barSpacing": 2,
+        "minHeight": 3,
+        "width": 200
     },
     "wallpaper": {
-        "transition": "fade",
-        "duration": 1
-    },
-    "icons": {
-        "volume": "󰕾",
-        "volumeMuted": "󰖁",
-        "wifiOn": "󰖩",
-        "wifiOff": "󰖪"
+        "blurAmount": 64,
+        "blurOverview": true,
+        "duration": 600,
+        "path": "/home/river/.config/niri/themes/solar/wallpaper.jpg",
+        "transition": "fade"
     }
 }

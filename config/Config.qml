@@ -68,9 +68,12 @@ QtObject {
     property int visualizerBarCount: 20
     property int visualizerBarSpacing: 2
 
-    // Wallpaper (swww)
-    property string swwwTransition: "fade"
-    property int swwwDuration: 1
+    // Wallpaper
+    property string wallpaperPath: shellDir + "/wallpaper.jpg"
+    property string wallpaperTransition: "fade"
+    property int wallpaperDuration: 1
+    property bool wallpaperBlurOverview: true
+    property int wallpaperBlurAmount: 64
 
     // Icons
     property string iconVolume: "󰕾"
@@ -142,8 +145,11 @@ QtObject {
 
             // Wallpaper
             if (cfg.wallpaper) {
-                if (cfg.wallpaper.transition !== undefined) config.swwwTransition = cfg.wallpaper.transition
-                if (cfg.wallpaper.duration !== undefined) config.swwwDuration = cfg.wallpaper.duration
+                if (cfg.wallpaper.path !== undefined) config.wallpaperPath = cfg.wallpaper.path
+                if (cfg.wallpaper.transition !== undefined) config.wallpaperTransition = cfg.wallpaper.transition
+                if (cfg.wallpaper.duration !== undefined) config.wallpaperDuration = cfg.wallpaper.duration
+                if (cfg.wallpaper.blurOverview !== undefined) config.wallpaperBlurOverview = cfg.wallpaper.blurOverview
+                if (cfg.wallpaper.blurAmount !== undefined) config.wallpaperBlurAmount = cfg.wallpaper.blurAmount
             }
 
             // Icons
