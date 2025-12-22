@@ -140,7 +140,13 @@ output_path = "%s/.config/gtk-4.0/gtk-colors.css"
 [templates.hecate_gtk3]
 input_path = "%s/config/templates/gtk-colors.css"
 output_path = "%s/.config/gtk-3.0/gtk.css"
+
+# Neovim colorscheme (lazy.nvim plugin)
+[templates.hecate_nvim]
+input_path = "%s/config/templates/nvim.lua"
+output_path = "%s/.config/nvim/lua/plugins/hecate-colors.lua"
 `, shellDir, shellDir,
+		shellDir, homeDir,
 		shellDir, homeDir,
 		shellDir, homeDir,
 		shellDir, homeDir,
