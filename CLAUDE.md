@@ -11,6 +11,19 @@ HecateShell is a custom Wayland shell built with QuickShell/QML for Arch Linux r
 
 ## Development Commands
 
+### Release Packaging
+```bash
+# Package for GitHub release + update AUR PKGBUILDs
+./release.sh
+
+# This creates:
+# - Binary release (hecate-shell-VERSION-x86_64.tar.gz)
+# - Shell files (HecateShell.tar.gz)
+# - Updates AUR PKGBUILD files
+# - Generates checksums
+# - Creates .SRCINFO files
+```
+
 ### Building the CLI
 ```bash
 ./build.sh

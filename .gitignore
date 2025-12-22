@@ -107,6 +107,11 @@ vim/
 
 bin/
 
+# release helpers
+aur/
+aur-publish.sh
+release.sh
+
 # direnv
 .envrc
 .direnv/

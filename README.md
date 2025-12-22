@@ -1,101 +1,168 @@
+<div align="center">
+
 # HecateShell
 
-A modular, customizable Wayland shell built with QuickShell for Arch Linux running Niri.
+![GitHub last commit](https://img.shields.io/github/last-commit/river1337/HecateShell?style=for-the-badge&labelColor=1c1a16&color=f7d38c)
+![GitHub repo size](https://img.shields.io/github/repo-size/river1337/HecateShell?style=for-the-badge&labelColor=1c1a16&color=e7f796)
+[![AUR Version](https://img.shields.io/aur/version/hecate-shell?style=for-the-badge&labelColor=1c1a16&color=f7a696)](https://aur.archlinux.org/packages/hecate-shell)
+[![Made with QuickShell + Go](https://img.shields.io/badge/Made%20with-QuickShell-purple?style=for-the-badge&labelColor=1c1a16&color=b0f78c)](https://github.com/outfoxxed/quickshell)
 
-## Features
+</div>
 
-- **Hot-reloading themes** - Edit `theme.json` and see changes instantly
-- **Material Design 3 colors** - Generated from wallpapers via matugen
-- **Integrated theming** - Syncs colors to cava, spicetify, discord, and micro
-- **Audio visualizer** - Real-time cava integration in the bar
-- **PipeWire audio control** - Click to mute, scroll to adjust volume
-- **Workspace indicators** - Animated workspace switching via Niri IPC
+## ✨ Features
 
-## Installation
+- 🎨 **Live Theme Reloading** - Edit `theme.json` and watch colors update in real-time
+- 🎵 **Audio Visualizer** - Real-time cava integration in the bar
+- 🔊 **PipeWire Control** - Click to mute, scroll to adjust volume
+- 🖥️ **Workspace Indicators** - Smooth animations via Niri IPC
+- 🎭 **System-Wide Theming** - Auto-sync colors to 15+ applications via matugen integration
+- ⚙️ **Hot Config Reload** - Change settings without restarting
 
+## 📦 Installation
+
+### Arch Linux (AUR)
 ```bash
-# Build the CLI
+# From source
+paru -S hecate-shell
+
+# Precompiled binary (faster)
+paru -S hecate-shell-bin
+
+# Run interactive installer:
+hecate install
+```
+
+### Manual Installation
+```bash
+# Clone and build
+git clone https://github.com/river1337/HecateShell.git
+cd HecateShell
 ./build.sh
 
-# Install (clones to ~/.config/HecateShell)
-./hecate install
-
-# Start the shell
-./hecate run
+# Run interactive installer
+./hecate-shell-src/hecate install
 ```
 
-## Usage
+## 🎨 Theming
+
+HecateShell uses [matugen](https://github.com/InioX/matugen) to generate Material Design 3 color schemes from your wallpaper.
+
+When you generate a theme, colors automatically sync to **15+ applications** including Neovim, VSCode, Kitty, Alacritty, Spotify, Discord, Firefox, and more.
+
+Your existing `~/.config/matugen/config.toml` templates are also applied.
+
+<details>
+<summary><b>📋 Theme Commands</b></summary>
 
 ```bash
-# Start shell (daemonized)
-hecate run
+# Generate theme from wallpaper
+hecate wallpaper ~/path/to/image.jpg -g
 
-# Start in debug mode (foreground)
-hecate run --debug
-
-# Reload shell
-hecate run --reload
-
-# Set wallpaper
-hecate wallpaper /path/to/image.jpg
-
-# Set wallpaper and generate theme
-hecate wallpaper /path/to/image.jpg --generate-theme
-
-# Reload theme from theme.json
+# Reload theme
 hecate theme reload
 
-# Check for updates
-hecate update
+# Customize transition effects
+hecate wallpaper ~/image.jpg --transition fade --duration 2
 ```
 
-## Project Structure
+</details>
 
+## ⚙️ Configuration
+
+HecateShell uses two JSON configuration files that **hot-reload every second**:
+
+<details>
+<summary><b>config.json - Shell Settings</b></summary>
+
+```json
+{
+  "bar": {
+    "height": 35,
+    "borderRadius": 0
+  },
+  "typography": {
+    "fontFamily": "JetBrains Mono",
+    "fontSize": 12,
+    "fontSizeLarge": 14,
+    "fontSizeSmall": 10
+  },
+  "spacing": {
+    "paddingSmall": 4,
+    "paddingMedium": 8,
+    "paddingLarge": 12,
+    "spacing": 8
+  },
+  "visualizer": {
+    "width": 200,
+    "minHeight": 3,
+    "barCount": 20,
+    "barSpacing": 2
+  },
+  "wallpaper": {
+    "transition": "fade",
+    "duration": 1
+  },
+  "icons": {
+    "volume": "󰕾",
+    "volumeMuted": "󰖁",
+    "wifiOn": "󰖩",
+    "wifiOff": "󰖪"
+  }
+}
 ```
-.
-├── shell.qml              # Main entry point
-├── qmldir                 # QML module definitions
-├── theme.json             # Material Design 3 color palette
-├── config/
-│   ├── Config.qml         # Singleton config with hot-reload
-│   ├── ColorLoader.qml    # Theme file loader
-│   ├── cava.conf          # Audio visualizer config
-│   └── templates/         # Matugen templates
-│       ├── hecate.json    # Shell theme template
-│       ├── cava.ini       # Cava colors
-│       ├── spicetify.ini  # Spotify theme
-│       ├── discord.css    # Vencord/system24 theme
-│       └── micro.micro    # Micro editor colorscheme
-├── bar/
-│   └── Bar.qml            # Main bar component
-├── components/
-│   ├── Workspaces.qml     # Workspace indicators
-│   ├── MusicVisualizer.qml # Audio visualizer (cava)
-│   ├── DateWidget.qml     # Date display
-│   ├── TimeWidget.qml     # Time display
-│   └── SystemWidgets.qml  # Audio + WiFi widgets
-└── hecate-shell-src/      # Go CLI source
+
+</details>
+
+<details>
+<summary><b>theme.json - Colors (Auto-generated)</b></summary>
+
+Material Design 3 color palette generated by matugen. Edit manually or regenerate from wallpapers.
+
+Example structure:
+```json
+{
+    "name": "HecateShell-Matugen",
+    "primary": "#d5c4aa",
+    "primaryText": "#392f1d",
+    "primaryContainer": "#b3a48b",
+    "secondary": "#cfc5b8",
+    "secondaryText": "#353027",
+    "surface": "#141311",
+    "surfaceText": "#e7e1de",
+    "surfaceVariant": "#4c463d",
+    "surfaceVariantText": "#cec5ba",
+    "surfaceTint": "#d5c4aa",
+    "background": "#141311",
+    "backgroundText": "#e7e1de",
+    "outline": "#979085",
+    "surfaceContainer": "#211f1d",
+    "surfaceContainerHigh": "#2b2a28",
+    "surfaceContainerHighest": "#363432",
+    "error": "#ffb4ab",
+    "warning": "#cfc5b8",
+    "info": "#d5c4aa"
+}
 ```
 
-## Theming
+</details>
 
-HecateShell uses matugen to generate Material Design 3 color palettes. When you run `hecate wallpaper <image> -g` or `hecate theme reload`, it generates colors for:
+**Changes to either file apply within 1 second with smooth transitions!**
 
-- **HecateShell** (`theme.json`) - Shell UI colors
-- **Cava** (`~/.config/cava/config`) - Audio visualizer gradient
-- **Spicetify** (`~/.config/spicetify/Themes/text/color.ini`) - Spotify theme
-- **Discord** (`~/.config/Vencord/themes/sys24.css`) - Vencord system24 theme
-- **Micro** (`~/.config/micro/colorschemes/matugen.micro`) - Micro editor colorscheme
-- **Neovim** (`~/.config/nvim/lua/plugins/hecate-colors.lua`) - Neovim colorscheme
-- And many more (VSCode, Niri, Firefox, Kitty, Alacritty, KDE, Qt, GTK)
+## 🖥️ Niri Setup
 
-Your existing `~/.config/matugen/config.toml` templates are also applied, so any other apps you have configured will update too.
-
-## Niri Setup
-
-For wallpapers to appear in the overview backdrop, add these layer rules to your niri config:
+To ensure full functionality of HecateShell when using Niri, add the following entries to your `config.kdl`:
 
 ```kdl
+// Start swww and HecateShell automatically on login
+spawn-at-startup "swww-daemon" // required for wallpaper support
+spawn-at-startup "hecate" "run"
+
+// ─────────────────────────────────────────────
+// Optional: Wallpaper in the overview backdrop
+// ─────────────────────────────────────────────
+// Only include the rules below if you want the
+// wallpaper to be visible behind the overview.
+
 layer-rule {
     match namespace="^swww-daemon$"
     place-within-backdrop true
@@ -106,30 +173,39 @@ layer-rule {
     place-within-backdrop true
 }
 
-output "eDP-1" {
-    background-color "transparent"
+layout {
+    background-color "transparent" // background must be transparent for wallpapers to show
 }
 ```
 
-See [NIRI_SETUP.md](NIRI_SETUP.md) for details.
+## 📋 Requirements
 
-## Dependencies
+**Required:**
+- [quickshell-git](https://aur.archlinux.org/packages/quickshell-git) (Qt 6.10+, Niri support)
+- [hecate-shell](https://aur.archlinux.org/packages/hecate-shell) - Shell backend (manages theming, configs, etc)
+- [cava](https://archlinux.org/packages/extra/x86_64/cava/) - Audio visualizer
+- [pipewire](https://archlinux.org/packages/extra/x86_64/pipewire/) + [wireplumber](https://archlinux.org/packages/extra/x86_64/wireplumber/) - Audio control
+- [matugen](https://aur.archlinux.org/packages/matugen-bin/) - Theme generation
+- [swww](https://aur.archlinux.org/packages/swww/) - Wallpaper daemon
+- [niri](https://github.com/YaLTeR/niri) - Wayland compositor
 
-- quickshell-git (Qt 6.10+, Niri support)
-- cava
-- pipewire + wireplumber
-- matugen
-- niri
-- swww
+**Optional:**
+- ttf-jetbrains-mono-nerd - Default font
+- fish, kitty, micro, neovim - For bundled dotfiles
 
-## Development
+The installer can automatically install these via your AUR helper (paru/yay).
 
-```bash
-# Build CLI
-./build.sh
+## 🙏 Credits
 
-# Run in debug mode
-./hecate run -rd
-```
+- [QuickShell](https://github.com/outfoxxed/quickshell) - The QML shell framework
+- [Niri](https://github.com/YaLTeR/niri) - The scrollable-tiling Wayland compositor
+- [matugen](https://github.com/InioX/matugen) - Material Design 3 color generation
+- [DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) - Inspiration for matugen integration
 
-Edit any QML file and the shell will hot-reload. Edit `theme.json` and colors update within 1 second with smooth transitions.
+---
+
+<div align="center">
+
+**Made with ❤️ for the Niri community**
+
+</div>
