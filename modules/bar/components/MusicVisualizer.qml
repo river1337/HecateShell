@@ -1,5 +1,5 @@
 import QtQuick
-import ".." as Shell
+import "../../.." as Shell
 import Quickshell
 import Quickshell.Io
 

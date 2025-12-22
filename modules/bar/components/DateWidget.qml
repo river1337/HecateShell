@@ -1,5 +1,5 @@
 import QtQuick
-import ".." as Shell
+import "../../.." as Shell
 
 // Date widget component
 Text {

@@ -4,12 +4,5 @@ module Shell
 singleton Config 1.0 config/Config.qml
 ColorLoader 1.0 config/ColorLoader.qml
 
-# Bar
-Bar 1.0 bar/Bar.qml
-
-# Components
-Workspaces 1.0 components/Workspaces.qml
-MusicVisualizer 1.0 components/MusicVisualizer.qml
-DateWidget 1.0 components/DateWidget.qml
-TimeWidget 1.0 components/TimeWidget.qml
-SystemWidgets 1.0 components/SystemWidgets.qml
+# Modules
+Bar 1.0 modules/bar/Bar.qml

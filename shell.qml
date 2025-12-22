@@ -18,7 +18,7 @@ ShellRoot {
     }
 
     // Load the bar
-    Shell.Bar {}
+    Bar {}
 
     // Future modules can be added here:
     // Wallpaper {}

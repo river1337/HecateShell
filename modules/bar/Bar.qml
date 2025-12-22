@@ -2,7 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
-import ".." as Shell
+import "../.." as Shell
+import "./components" as BarComponents
 
 PanelWindow {
     id: bar
@@ -17,7 +18,7 @@ PanelWindow {
     color: Shell.Config.backgroundColor
 
     // LEFT SECTION: Workspaces
-    Shell.Workspaces {
+    BarComponents.Workspaces {
         anchors.left: parent.left
         anchors.leftMargin: Shell.Config.paddingSmall
         anchors.verticalCenter: parent.verticalCenter
@@ -41,15 +42,15 @@ PanelWindow {
                 anchors.centerIn: parent
                 spacing: Shell.Config.paddingLarge
 
-                Shell.DateWidget {
+                BarComponents.DateWidget {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Shell.MusicVisualizer {
+                BarComponents.MusicVisualizer {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Shell.TimeWidget {
+                BarComponents.TimeWidget {
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -57,7 +58,7 @@ PanelWindow {
     }
 
     // RIGHT SECTION: System Widgets (Audio + WiFi grouped)
-    Shell.SystemWidgets {
+    BarComponents.SystemWidgets {
         anchors.right: parent.right
         anchors.rightMargin: Shell.Config.paddingSmall
         anchors.verticalCenter: parent.verticalCenter
