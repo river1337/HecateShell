@@ -5,7 +5,9 @@ singleton Config 1.0 config/Config.qml
 ColorLoader 1.0 config/ColorLoader.qml
 
 # Services
+singleton CompositorService 1.0 services/CompositorService.qml
 singleton NiriService 1.0 services/NiriService.qml
+singleton HyprlandService 1.0 services/HyprlandService.qml
 
 # Modules
 Bar 1.0 modules/bar/Bar.qml

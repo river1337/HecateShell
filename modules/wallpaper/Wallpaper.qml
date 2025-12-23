@@ -103,13 +103,14 @@ Variants {
                 }
             }
 
-            // Blur layer for Niri overview (blurs the entire container)
+            // Blur layer for overview mode (blurs the entire container)
+            // Note: Only works on Niri (Hyprland has no native overview)
             MultiEffect {
                 id: blurEffect
                 anchors.fill: parent
                 source: container
                 visible: opacity > 0
-                opacity: (Shell.Config.wallpaperBlurOverview && Shell.NiriService.inOverview) ? 1.0 : 0.0
+                opacity: (Shell.Config.wallpaperBlurOverview && Shell.CompositorService.inOverview) ? 1.0 : 0.0
 
                 blur: 1.0
                 blurEnabled: true

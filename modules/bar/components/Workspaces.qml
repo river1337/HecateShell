@@ -44,15 +44,17 @@ Item {
 
             Repeater {
                 id: repeater
-                model: niri.workspaces
+                model: Shell.CompositorService.workspaces
 
                 Item {
                     visible: index < 11
                     width: Shell.Config.workspaceItemSize
                     height: Shell.Config.workspaceItemSize
 
-                    property bool isActive: model.isActive
-                    property int workspaceId: model.id
+                    // Handle both Niri (uses model.X) and Hyprland (uses modelData.X)
+                    property var workspace: model.isActive !== undefined ? model : modelData
+                    property bool isActive: workspace.isActive !== undefined ? workspace.isActive : false
+                    property int workspaceId: workspace.id !== undefined ? workspace.id : 0
 
                     onIsActiveChanged: {
                         if (isActive) {
@@ -63,11 +65,11 @@ Item {
 
                     Text {
                         anchors.centerIn: parent
-                        text: index
-                        color: model.isActive ? Shell.Config.backgroundColorAlt : Shell.Config.textColor
+                        text: Shell.CompositorService.isNiri ? index : (index + 1)
+                        color: isActive ? Shell.Config.backgroundColorAlt : Shell.Config.textColor
                         font.family: Shell.Config.fontFamily
                         font.pixelSize: Shell.Config.fontSize
-                        font.bold: model.isActive
+                        font.bold: isActive
 
                         Behavior on color {
                             ColorAnimation { duration: 200; easing.type: Easing.OutQuad }
@@ -80,7 +82,7 @@ Item {
                         onEntered: parent.opacity = 0.8
                         onExited: parent.opacity = 1.0
                         onClicked: {
-                            niri.focusWorkspaceById(model.id)
+                            Shell.CompositorService.focusWorkspace(workspaceId)
                         }
                     }
 
@@ -101,10 +103,10 @@ Item {
             onWheel: function(wheel) {
                 if (wheel.angleDelta.y > 0) {
                     // Scroll up - previous workspace
-                    niri.focusWorkspaceById(activeIndicator.activeWorkspaceId - 1)
+                    Shell.CompositorService.focusWorkspace(activeIndicator.activeWorkspaceId - 1)
                 } else if (wheel.angleDelta.y < 0) {
                     // Scroll down - next workspace
-                    niri.focusWorkspaceById(activeIndicator.activeWorkspaceId + 1)
+                    Shell.CompositorService.focusWorkspace(activeIndicator.activeWorkspaceId + 1)
                 }
             }
         }

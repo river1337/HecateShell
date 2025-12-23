@@ -10,6 +10,10 @@ QtObject {
     // Track if we're in overview mode
     property bool inOverview: false
 
+    // Workspace model - will be set by shell.qml
+    property var workspaces: []
+    property var focusedWorkspace: null
+
     // Niri IPC socket path
     property string socketPath: Quickshell.env("NIRI_SOCKET")
 
@@ -46,6 +50,23 @@ QtObject {
             if (wasInOverview !== inOverview) {
                 console.log("Niri overview:", inOverview ? "opened" : "closed")
             }
+        }
+    }
+
+    // Focus workspace by ID (delegates to niri object in shell.qml)
+    property var niriObject: null
+
+    function focusWorkspace(id) {
+        if (niriObject) {
+            niriObject.focusWorkspaceById(id)
+            console.log("Niri: Switched to workspace", id)
+        }
+    }
+
+    function focusWorkspaceByIndex(index) {
+        // Niri workspaces are accessed directly by index
+        if (workspaces && workspaces[index]) {
+            focusWorkspace(workspaces[index].id)
         }
     }
 
